@@ -28,7 +28,7 @@ public class EventTest {
 
         eventStore.removeAll("test");
 
-        EventIterator iterator = eventStore.query("type", 120L, 125L);
+        EventIterator iterator = eventStore.query("type", 0L, 0L);
 
     }
 
