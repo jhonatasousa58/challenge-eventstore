@@ -64,7 +64,13 @@ public class EventStoreImpl implements EventStore {
         EventIterator iterator = new EventIteratorImpl(eventList, eventList.entrySet().iterator());
         ConcurrentHashMap<Long, Event> eventQuery = new ConcurrentHashMap<Long, Event>();
         if(startTime == 0 && endTime == 0) {
-            return iterator;
+            while (iterator.moveNext()) {
+                if (type.equals(iterator.current().type())) {
+                    eventQuery.put(iterator.current().timestamp(), iterator.current());
+                }
+            }
+            EventIterator it = new EventIteratorImpl(eventQuery, eventQuery.entrySet().iterator());
+            return it;
         } else if (startTime >= 0 && endTime == 0) {
             while (iterator.moveNext() && iterator.current().timestamp() >= startTime) {
                 if (type.equals(iterator.current().type())) {
